@@ -1,0 +1,22 @@
+{
+  "name": "electron-equipe1",
+  "version": "1.0.0",
+  "description": "App Electron Equipe 1 MR-RD-JS-PM",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TEST-GRETA/Electron-equipe1.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TEST-GRETA/Electron-equipe1/issues"
+  },
+  "homepage": "https://github.com/TEST-GRETA/Electron-equipe1#readme",
+  "devDependencies": {
+    "electron": "^17.1.2"
+  }
+}
