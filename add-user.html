@@ -5,19 +5,53 @@
     <meta charset="UTF-8">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
     <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+
     <title>Création utilisateur</title>
 </head>
 
 <body>
-    <h1>Création d'un nouvel utilisateur</h1>
+    <h1>Création d'un nouvel élève</h1>
 
     <form>
         <div>
-            <label>Entrez votre utilisateur</label>
-            <input autofocus />
+            <label>Nom </label>
+            <input id="nom" required autofocus />
         </div>
         <br>
-        <button type="submit">Ajouter</button>
+        <div>
+            <label>Prénom </label>
+            <input id="prenom" required autofocus />
+        </div>
+        <br>
+        <div>
+            <label>Date de naissance </label>
+            <input type="date" name="date_naissance" id="date_naissance" required autofocus>
+            <!-- <input id="date_naissance" required autofocus /> -->
+        </div>
+        <br>
+        <div>
+            <label>Numéro de éléphone</label>
+            <input type="tel" name="telephone" id="telephone">
+            <!-- <input id="telephone" required autofocus /> -->
+        </div>
+        <br>
+        <div>
+            <label>E-mail </label>
+            <input type="email" name="email" id="email" required autofocus>
+        </div>
+        <br>
+        <div>
+            <label>Numéro de sécurité sociale</label>
+            <input id="num_secu" required autofocus />
+        </div>
+        <br>
+        <div>
+            <label>Photo</label>
+            <input type="file" name="photo" id="photo">
+        </div>
+        <br>
+        <button type="submit" style="margin: 10%;">Ajouter</button>
+        <button type="reset">Annuler</button>
     </form>
     <script src="add-user.js"></script>
 </body>
