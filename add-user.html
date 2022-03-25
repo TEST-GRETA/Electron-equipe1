@@ -5,14 +5,28 @@
     <meta charset="UTF-8">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
     <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <style>
+        label
+        {
+            display: block;
+            width: 150px;
+            float: left;
+        }
 
+        input
+        {
+            display: block;
+            float: right;
+        }
+
+    </style>
     <title>Création utilisateur</title>
 </head>
 
 <body>
     <h1>Création d'un nouvel élève</h1>
-
-    <form>
+    <div class="all">
+    <form method="get" action="add-user.js" id="eleve" name="eleve">
         <div>
             <label>Nom </label>
             <input id="nom" required autofocus />
@@ -50,9 +64,10 @@
             <input type="file" name="photo" id="photo">
         </div>
         <br>
-        <button type="submit" style="margin: 10%;">Ajouter</button>
+        <button type="submit" style="margin: 10rem;">Ajouter</button>
         <button type="reset">Annuler</button>
     </form>
+</div>
     <script src="add-user.js"></script>
 </body>
 
