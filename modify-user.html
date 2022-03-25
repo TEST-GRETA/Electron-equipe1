@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'"> -->
+    <!-- <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'"> -->
+    <!-- <link rel="stylesheet" type="text/css" href="modify-user.css"> -->
+    <title>Modification du profil</title>
+
+</head>
+
+<body>
+
+    <form id="profil">
+        <fieldset>
+            <legend>Modifier votre Profil</legend>
+
+            <div class="formcontainer">
+
+                <div class="container">
+                    <p> <input type="text" id="ztNom" placeholder="Nom" autofocus />
+                    </p>
+                    <p> <input type="text" id="ztPrenom" placeholder="Prenom" />
+                    </p>
+                    <p> <label for="Date de naissance">Date de naissance:</label><br />
+                        <input type="date" id="ztDate" />
+                    </p>
+                    <p> <input type="text" id="ztAdresse" placeholder="Adresse" />
+                    </p>
+                    <p> <input type="tel" id="ztTel" placeholder="Téléphone" />
+                    </p>
+                    <p> <input type="email" id="ztEmail" placeholder="Email" />
+                    </p>
+                    <p> <input type="text" id="ztSecu" placeholder="Numéro de sécurité" />
+                    </p>
+                </div>
+
+                <div class="container">
+                    <input type="button" value="Retour" id="btnRetour" />
+                    <input type="button" value="Valider" id="btnValider" />
+                </div>
+            </div>
+        </fieldset>
+    </form>
+    <script src="modify-user.js"></script>
+</body>
+
+</html>
