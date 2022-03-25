@@ -6,10 +6,17 @@ const path = require("path")
 // Test MAC
 const isMac = process.platform === "darwin"
 
+//X *** Déclaration collection des objets utilisateurs récupérés dans fichier JSON
+//Xlet collectionUtilisateurs = require('./db.json');
+//Xconsole.log(collectionUtilisateurs);
+
+// *** Déclaration des 4 pages
 let mainWindow;
 let addWindow;
+let modifyWindow;
+let viewWindow;
 
-// modify your existing createWindow() function
+// ### Page Principale avec liste des utilisateurs
 const createWindow = () => {
     mainWindow = new BrowserWindow({
         width: 800,
@@ -20,6 +27,7 @@ const createWindow = () => {
     })
 
     mainWindow.loadFile("index.html");
+    mainWindow.maximize();
 }
 
 app.whenReady().then(() => {
@@ -29,7 +37,7 @@ app.whenReady().then(() => {
         if (BrowserWindow.getAllWindows().length === 0) createWindow()
     })
 
-    !isMac && mainWindow.on("closed", () => app.quit());
+    //!isMac && mainWindow.on("closed", () => app.quit());
 
     const mainMenu = Menu.buildFromTemplate(menuTemplate);
     Menu.setApplicationMenu(mainMenu);
@@ -39,23 +47,91 @@ app.on("window-all-closed", () => {
     if (!isMac) app.quit()
 })
 
+// ### Page Création utilisateur
 function createAddWindow() {
     addWindow = new BrowserWindow({
-        width: 450,
-        height: 250,
-        title: "Ajouter une nouvelle tâche",
+        width: 800,
+        height: 600,
+        title: "Création utilisateur",
         webPreferences: {
             preload: path.join(__dirname, "preload.js")
         }
     })
 
-    //addWindow.loadFile('add-user.html');
     addWindow.loadURL(`file://${__dirname}/add-user.html`);
+    addWindow.maximize();
 }
 
-ipcMain.on("todo:add", (event, todo) => {
-    mainWindow.webContents.send("todo:add", todo);
+// ### Page Modification utilisateur
+function createModifyWindow() {
+    modifyWindow = new BrowserWindow({
+        width: 800,
+        height: 600,
+        title: "Modification utilisateur",
+        webPreferences: {
+            preload: path.join(__dirname, "preload.js")
+        }
+    })
+
+    modifyWindow.loadURL(`file://${__dirname}/modify-user.html`);
+    addWindow.maximize();
+}
+
+// ### Page Detail utilisateur
+function createViewWindow() {
+    viewWindow = new BrowserWindow({
+        width: 800,
+        height: 600,
+        title: "Détail utilisateur",
+        webPreferences: {
+            preload: path.join(__dirname, "preload.js")
+        }
+    })
+
+    viewWindow.loadURL(`file://${__dirname}/view-user.html`);
+    viewWindow.maximize();
+}
+
+ipcMain.on("todo:add", (event, collectionUtilisateurs) => {
+    createAddWindow();
+    addWindow.webContents.send("todo:add", collectionUtilisateurs);
+    mainWindow.close();
+});
+
+ipcMain.on("todo:modify", (event, info) => {
+    createModifyWindow();
+    modifyWindow.webContents.send("todo:modify", info);
+    mainWindow.close();
+});
+
+ipcMain.on("todo:delete", (event, collectionUtilisateurs) => {
+    mainWindow.close();
+    createWindow();
+    mainWindow.webContents.send("todo:delete", collectionUtilisateurs);
+});
+
+ipcMain.on("todo:view", (event, info) => {
+    createViewWindow();
+    viewWindow.webContents.send("todo:view", info);
+    mainWindow.close();
+});
+
+ipcMain.on("todo:returnAdd", (event, collectionUtilisateurs) => {
+    createWindow();
+    mainWindow.webContents.send("todo:returnAdd", collectionUtilisateurs);
     addWindow.close();
+});
+
+ipcMain.on("todo:returnModify", (event, collectionUtilisateurs) => {
+    createWindow();
+    mainWindow.webContents.send("todo:returnModify", collectionUtilisateurs);
+    modifyWindow.close();
+});
+
+ipcMain.on("todo:returnView", (event, collectionUtilisateurs) => {
+    createWindow();
+    mainWindow.webContents.send("todo:returnView", collectionUtilisateurs);
+    viewWindow.close();
 });
 
 // Config MENU
