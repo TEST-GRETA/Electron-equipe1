@@ -4,7 +4,7 @@ addButton.onclick = function () {
 };
 
 // id Utilisateur
-let idUser = 1;
+let idUser = 0;
 let currentIdUser = idUser.toString();
 
 //Ajout de 2 Objets JSON dans la liste au démmarrage de l'application 
@@ -41,11 +41,12 @@ initUtilisateurs.map(currentObjetUser => {
     let ajoutLigne = createNewLigne();
     createElementsForUtilisateur(ajoutLigne, currentObjetUser, currentIdUser, true);
 
-    idUser += 1;
-    currentIdUser = idUser.toString();
 });
 
 function createNewLigne() {
+
+    idUser += 1;
+    currentIdUser = idUser.toString();
 
     let newLigne = document.createElement("tr");
     newLigne.id = "tr-" + currentIdUser;
