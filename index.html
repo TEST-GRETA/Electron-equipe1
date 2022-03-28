@@ -1,12 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 
 <head>
     <meta charset="UTF-8">
-    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
-    <!--<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'"> -->
-    <!--<meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'"> -->
-    <link rel="index.css"/>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
     <title>Gestion des utilisateurs</title>
 </head>
 
@@ -15,8 +13,10 @@
     <div>
         <button type="button" id="addButton">Créer un nouvel utilisateur</button>
     </div>
+    <br>
     <table>
         <thead>
+            <th>Id</th>
             <th>Nom</th>
             <th>Prénom</th>
             <th>Date de naissance</th>

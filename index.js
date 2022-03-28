@@ -1,105 +1,145 @@
-//Objet JSON pour test
-let utilisateurs = [
+// Gestion bouton "Créer un nouvel utilisateur"
+addButton.onclick = function () {
+    api.send("to:add");
+};
+
+// id Utilisateur
+let idUser = 0;
+let currentIdUser = idUser.toString();
+
+//Ajout de 2 Objets JSON dans la liste au démmarrage de l'application 
+let initUtilisateurs = [
     {
-        nom: "Tribal",
-        prenom: "Djidji",
-        date_naissance: "26/07/1992",
-        adresse: "24 chemin des Tantalas",
-        telephone: "0612345678",
-        email: "djiTrib@titi.com",
-        num_secu: "0159632587419",
-        photo: "je ne sais pas"
+        "nom": "DUPONT",
+        "prenom": "Antoine",
+        "date_naissance": "1992-07-26",
+        "adresse": "24 chemin des Tantalas 31000 TOULOUSE",
+        "telephone": "06-12-34-56-78",
+        "email": "adupont@gmail.com",
+        "num_secu": "0159632587418",
+        "photo": "apphoto.jpg"
     },
     {
-        nom: "Tol",
-        prenom: "Djidji",
-        date_naissance: "26/07/1992",
-        adresse: "24 chemin des Tantalas",
-        telephone: "0612345678",
-        email: "djiTrib@titi.com",
-        num_secu: "0159632587419",
-        photo: "je ne sais pas"
+        "nom": "DESCHAMPS",
+        "prenom": "Didier",
+        "date_naissance": "1970-07-28",
+        "adresse": "45 rue du Pré 75000 PARIS",
+        "telephone": "09-14-37-86-78",
+        "email": "dd@laposte.net",
+        "num_secu": "0789632587457",
+        "photo": "ddphoto.jpg"
     }
-]
+];
 
 //Déclaration variable hors function
-let list = document.querySelector("tbody");
+let listUtilisateurs = document.querySelector("tbody");
 
-afficherTableau();
+//Boucle de parcours de l'objet JSON
+//Il est possible d'utiliser map ou forEach
+initUtilisateurs.map(currentObjetUser => {
 
-api.receive("todo:returnAdd", colUserz => {
-    rechargementTableau(colUserz);
+    let ajoutLigne = createNewLigne();
+    createElementsForUtilisateur(ajoutLigne, currentObjetUser, currentIdUser, true);
+
 });
 
-api.receive("todo:returnModify", colUserz => {
-    rechargementTableau(colUserz);
-});
+function createNewLigne() {
 
-api.receive("todo:returnView", colUserz => {
-    rechargementTableau(colUserz);
-});
+    idUser += 1;
+    currentIdUser = idUser.toString();
 
-function rechargementTableau(collection){
-    utilisateurs = collection;
-    list.empty();
-    afficherTableau();
+    let newLigne = document.createElement("tr");
+    newLigne.id = "tr-" + currentIdUser;
+
+    listUtilisateurs.appendChild(newLigne);
+
+    return newLigne;
 }
 
-function afficherTableau(){
+function createElementsForUtilisateur(maLigne, objetUtilisateur, theId, isCreation) {
 
-    //Boucle de parcours de l'objet JSON
-    //Il est possible d'utiliser map ou forEach
-    utilisateurs.map(currentUser => {
+    const dateNaissanceUser = objetUtilisateur.date_naissance;
+    const ddDate = dateNaissanceUser.substr(8, 2);
+    const mmDate = dateNaissanceUser.substr(5, 2);
+    const yyyyDate = dateNaissanceUser.substr(0, 4);
+    const dateNaissanceUserFormat = ddDate + "/" + mmDate + "/" + yyyyDate;
 
-        let indexUser = utilisateurs.indexOf(currentUser);
+    if (isCreation == true) {
+        let tdId = document.createElement("td");
+        let textId = document.createTextNode(theId);
+        tdId.appendChild(textId);
+        maLigne.appendChild(tdId);
+    }
 
-        let ajoutLigne = document.createElement("tr");
-        let tdNom = document.createElement("td");
-        let textNom = document.createTextNode(currentUser.nom);
-        let tdPrenom = document.createElement("td");
-        let textPrenom = document.createTextNode(currentUser.prenom)
-        let tdDateNaissance = document.createElement("td");
-        let textDateNaissance = document.createTextNode(currentUser.date_naissance);
-        let btns = document.createElement("td");
-        let btnDetail = document.createElement("button");
-        btnDetail.innerHTML = "Détails";
-        btnDetail.type = "button";
-        btnDetail.addEventListener("click", function(){
-            let info = [utilisateurs, indexUser];
-            api.send("todo:view", info);
-        });
-        let btnModifier = document.createElement("button");
-        btnModifier.innerHTML = "Modifier";
-        btnModifier.type = "button";
-        btnModifier.addEventListener("click", function(){
-            let info = [utilisateurs, indexUser];
-            api.send("todo:modify", info);
-        });
-        let btnSupprimer = document.createElement("button");
-        btnSupprimer.innerHTML = "Supprimer";
-        btnSupprimer.type = "button";
-        btnSupprimer.addEventListener("click", function(){
-            utilisateurs.splice(indexUser, 1);
-            alert(utilisateurs);
-            api.send("todo:delete", utilisateurs);
-        });
-
-        tdNom.appendChild(textNom);
-        tdPrenom.appendChild(textPrenom);
-        tdDateNaissance.appendChild(textDateNaissance);
-        btns.appendChild(btnDetail);
-        btns.appendChild(btnModifier);
-        btns.appendChild(btnSupprimer);
-
-        list.appendChild(ajoutLigne);
-
-        ajoutLigne.appendChild(tdNom);
-        ajoutLigne.appendChild(tdPrenom);
-        ajoutLigne.appendChild(tdDateNaissance);
-        ajoutLigne.appendChild(btns);
+    let tdNom = document.createElement("td");
+    let textNom = document.createTextNode(objetUtilisateur.nom);
+    let tdPrenom = document.createElement("td");
+    let textPrenom = document.createTextNode(objetUtilisateur.prenom)
+    let tdDateNaissance = document.createElement("td");
+    let textDateNaissance = document.createTextNode(dateNaissanceUserFormat);
+    let btns = document.createElement("td");
+    let btnDetail = document.createElement("button");
+    btnDetail.innerHTML = "Détails";
+    btnDetail.type = "button";
+    btnDetail.addEventListener("click", function () {
+        //alert("Détail Utilisateur : " + theId);
+        api.send("to:view", objetUtilisateur);
+        api.send("to:viewgo", objetUtilisateur);
     });
-}
+    let btnModifier = document.createElement("button");
+    btnModifier.innerHTML = "Modifier";
+    btnModifier.type = "button";
+    btnModifier.addEventListener("click", function () {
+        //alert("Modifier Utilisateur *** : " + theId);
+        let infos = [objetUtilisateur, theId];
+        api.send("to:modify", infos);
+    });
+    let btnSupprimer = document.createElement("button");
+    btnSupprimer.innerHTML = "Supprimer";
+    btnSupprimer.type = "button";
+    btnSupprimer.addEventListener("click", function () {
+        //alert("Supprimer Utilisateur !!! : " + theId);
+        // suppression ligne utilisateur
+        let ligneToDelete = btnSupprimer.parentNode.parentNode;
+        ligneToDelete.parentNode.removeChild(ligneToDelete);
+    });
 
-addButton.onclick = function(){
-    api.send("todo:add", utilisateurs);
+    tdNom.appendChild(textNom);
+    tdPrenom.appendChild(textPrenom);
+    tdDateNaissance.appendChild(textDateNaissance);
+    btns.appendChild(btnDetail);
+    btns.appendChild(btnModifier);
+    btns.appendChild(btnSupprimer);
+
+    maLigne.appendChild(tdNom);
+    maLigne.appendChild(tdPrenom);
+    maLigne.appendChild(tdDateNaissance);
+    maLigne.appendChild(btns);
 };
+
+api.receive("to:addvalider", newUtilisateur => {
+    //alert("add valider : " + newUtilisateur[0].nom);
+    const addObjetUtilisateur = newUtilisateur[0];
+
+    let newCreatedLigne = createNewLigne();
+    createElementsForUtilisateur(newCreatedLigne, addObjetUtilisateur, currentIdUser, true);
+});
+
+api.receive("to:modifyvalider", infos => {
+    //alert("modify-recup-infos-to-save : " + infos[0][0].nom + "-" + infos[0][1]);
+    const tabInfos = infos[0];
+    const newObjetUtilisateur = tabInfos[0];
+    const idUtilisateurToModify = tabInfos[1]
+
+    let ligneToModify = document.getElementById("tr-" + idUtilisateurToModify);
+
+    //ligneToModify.innerHTML = "";
+    //ligneToModify.textContent = "";
+    //while (ligneToModify.firstChild) {
+
+    for (let i = 0; i < 4; i++) {
+        ligneToModify.removeChild(ligneToModify.lastChild);
+    }
+
+    createElementsForUtilisateur(ligneToModify, newObjetUtilisateur, idUtilisateurToModify, false)
+});
