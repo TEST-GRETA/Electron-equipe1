@@ -6,9 +6,30 @@ const path = require("path")
 // Test MAC
 const isMac = process.platform === "darwin"
 
-//X *** Déclaration collection des objets utilisateurs récupérés dans fichier JSON
-//Xlet collectionUtilisateurs = require('./db.json');
-//Xconsole.log(collectionUtilisateurs);
+//X *** Déclaration collection des objets utilisateurs au format JSON
+//Ajout de 2 Objets JSON dans la liste au démarrage de l'application 
+const initUtilisateurs = [
+    {
+        "nom": "DUPONT",
+        "prenom": "Antoine",
+        "date_naissance": "1992-07-26",
+        "adresse": "24 chemin des Tantalas 31000 TOULOUSE",
+        "telephone": "06-12-34-56-78",
+        "email": "adupont@gmail.com",
+        "num_secu": "0159632587418",
+        "photo": "apphoto.jpg"
+    },
+    {
+        "nom": "DESCHAMPS",
+        "prenom": "Didier",
+        "date_naissance": "1970-07-28",
+        "adresse": "45 rue du Pré 75000 PARIS",
+        "telephone": "09-14-37-86-78",
+        "email": "dd@laposte.net",
+        "num_secu": "0789632587457",
+        "photo": "ddphoto.jpg"
+    }
+];
 
 // *** Déclaration des 4 pages
 let mainWindow;
@@ -28,15 +49,15 @@ const createWindow = () => {
 
     mainWindow.loadFile("index.html");
     mainWindow.maximize();
-}
+};
 
 app.whenReady().then(() => {
-    createWindow();
-    createAddWindow();
-    createModifyWindow();
-    createViewWindow();
 
-    mainWindow.show();
+    createWindow();
+    mainWindow.on("ready-to-show", () => {
+        console.log("-> init data");
+        mainWindow.webContents.send("to:initdata", initUtilisateurs);
+    });
 
     app.on("activate", () => {
         if (BrowserWindow.getAllWindows().length === 0) createWindow()
@@ -46,16 +67,15 @@ app.whenReady().then(() => {
 
     const mainMenu = Menu.buildFromTemplate(menuTemplate);
     Menu.setApplicationMenu(mainMenu);
-})
+});
 
 app.on("window-all-closed", () => {
     if (!isMac) app.quit()
-})
+});
 
 // ### Page Création utilisateur
 function createAddWindow() {
     addWindow = new BrowserWindow({
-        frame: false,
         width: 600,
         height: 675,
         title: "Création utilisateur",
@@ -65,15 +85,12 @@ function createAddWindow() {
     })
 
     addWindow.loadURL(`file://${__dirname}/add-user.html`);
-    addWindow.setMenuBarVisibility(false);
     addWindow.setPosition(700, 35);
-    addWindow.hide();
-}
+};
 
 // ### Page Modification utilisateur
 function createModifyWindow() {
     modifyWindow = new BrowserWindow({
-        frame: false,
         width: 600,
         height: 675,
         title: "Modification utilisateur",
@@ -82,15 +99,12 @@ function createModifyWindow() {
         }
     })
     modifyWindow.loadURL(`file://${__dirname}/modify-user.html`);
-    modifyWindow.setMenuBarVisibility(false);
     modifyWindow.setPosition(700, 35);
-    modifyWindow.hide();
-}
+};
 
 // ### Page Detail utilisateur
 function createViewWindow() {
     viewWindow = new BrowserWindow({
-        frame: false,
         width: 600,
         height: 675,
         title: "Détail utilisateur",
@@ -99,65 +113,51 @@ function createViewWindow() {
         }
     })
     viewWindow.loadURL(`file://${__dirname}/view-user.html`);
-    viewWindow.setMenuBarVisibility(false);
     viewWindow.setPosition(700, 35);
-    viewWindow.hide();
-}
+};
 
 ipcMain.on("to:add", (event) => {
     console.log("-> want to add");
-    //createAddWindow();
-    addWindow.show();
+    createAddWindow();
 });
 ipcMain.on("to:addannuler", (event) => {
     console.log("<- cancel add");
-    addWindow.reload();
-    addWindow.hide();
-    mainWindow.show();
-    //addWindow.close();
+    addWindow.close();
 });
 ipcMain.on("to:addvalider", (event, newUtilisateur) => {
     console.log("-> add : " + newUtilisateur.nom);
     mainWindow.webContents.send("to:addvalider", newUtilisateur);
-    addWindow.hide();
-    mainWindow.show();
-    //addWindow.close();
+    addWindow.close();
 });
 
 ipcMain.on("to:modify", (event, infos) => {
     console.log("-> want to modify : " + infos[0].nom + "-" + infos[1]);
-    //createModifyWindow();
-    modifyWindow.webContents.send("to:modify", infos);
-    modifyWindow.show();
+    createModifyWindow();
+    modifyWindow.on("ready-to-show", () => {
+        modifyWindow.webContents.send("to:modify", infos);
+    });
 });
 ipcMain.on("to:modifyannuler", (event) => {
     console.log("<- cancel modify");
-    modifyWindow.reload();
-    modifyWindow.hide();
-    mainWindow.show();
-    //modifyWindow.close();
+    modifyWindow.close();
 });
 ipcMain.on("to:modifyvalider", (event, infos) => {
     console.log("-> modify : " + infos[0].nom + "-" + infos[1]);
     console.log(infos[0]);
     mainWindow.webContents.send("to:modifyvalider", infos);
-    modifyWindow.hide();
-    mainWindow.show();
-    //modifyWindow.close();
+    modifyWindow.close();
 });
 
 ipcMain.on("to:view", (event, viewUtilisateur) => {
     console.log("-> view : " + viewUtilisateur.nom);
-    //createViewWindow();
-    viewWindow.webContents.send("to:view", viewUtilisateur);
-    viewWindow.show();
+    createViewWindow();
+    viewWindow.on("ready-to-show", () => {
+        viewWindow.webContents.send("to:view", viewUtilisateur);
+    });
 });
 ipcMain.on("to:viewretour", (event) => {
     console.log("<- return of view");
-    viewWindow.reload();
-    viewWindow.hide();
-    mainWindow.show();
-    //viewWindow.close();
+    viewWindow.close();
 });
 
 // Config MENU
@@ -184,7 +184,7 @@ const menuTemplate = [
             isMac ? { role: "close", accelerator: "Command+Q" } :
                 {
                     label: "Créer utilisateur", accelerator: "Ctrl+U",
-                    click() { addWindow.show(); }
+                    click() { createAddWindow(); }
                 },
             { role: "quit", label: "Quitter", accelerator: "Ctrl+Q" }
         ]
@@ -261,4 +261,4 @@ const menuTemplate = [
             }
         ]
     }
-]
+];

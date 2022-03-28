@@ -7,41 +7,8 @@ addButton.onclick = function () {
 let idUser = 0;
 let currentIdUser = idUser.toString();
 
-//Ajout de 2 Objets JSON dans la liste au démmarrage de l'application 
-let initUtilisateurs = [
-    {
-        "nom": "DUPONT",
-        "prenom": "Antoine",
-        "date_naissance": "1992-07-26",
-        "adresse": "24 chemin des Tantalas 31000 TOULOUSE",
-        "telephone": "06-12-34-56-78",
-        "email": "adupont@gmail.com",
-        "num_secu": "0159632587418",
-        "photo": "apphoto.jpg"
-    },
-    {
-        "nom": "DESCHAMPS",
-        "prenom": "Didier",
-        "date_naissance": "1970-07-28",
-        "adresse": "45 rue du Pré 75000 PARIS",
-        "telephone": "09-14-37-86-78",
-        "email": "dd@laposte.net",
-        "num_secu": "0789632587457",
-        "photo": "ddphoto.jpg"
-    }
-];
-
 //Déclaration variable hors function
 let listUtilisateurs = document.querySelector("tbody");
-
-//Boucle de parcours de l'objet JSON
-//Il est possible d'utiliser map ou forEach
-initUtilisateurs.map(currentObjetUser => {
-
-    let ajoutLigne = createNewLigne();
-    createElementsForUtilisateur(ajoutLigne, currentObjetUser, currentIdUser, true);
-
-});
 
 function createNewLigne() {
 
@@ -54,7 +21,7 @@ function createNewLigne() {
     listUtilisateurs.appendChild(newLigne);
 
     return newLigne;
-}
+};
 
 function createElementsForUtilisateur(maLigne, objetUtilisateur, theId, isCreation) {
 
@@ -117,6 +84,17 @@ function createElementsForUtilisateur(maLigne, objetUtilisateur, theId, isCreati
     maLigne.appendChild(btns);
 };
 
+api.receive("to:initdata", initObjetsUtilisateurs => {
+    //alert("init data" + initObjetsUtilisateurs[0][0].nom + "-" + initObjetsUtilisateurs[0][1].nom);
+    const collectiontUtilisateurs = initObjetsUtilisateurs[0];
+    // Boucle de parcours de l'objet JSON
+    // Il est possible d'utiliser map ou forEach
+    collectiontUtilisateurs.map(currentObjetUser => {
+        let ajoutLigne = createNewLigne();
+        createElementsForUtilisateur(ajoutLigne, currentObjetUser, currentIdUser, true);
+    });
+});
+
 api.receive("to:addvalider", newUtilisateur => {
     //alert("add valider : " + newUtilisateur[0].nom);
     const addObjetUtilisateur = newUtilisateur[0];
@@ -132,10 +110,6 @@ api.receive("to:modifyvalider", infos => {
     const idUtilisateurToModify = tabInfos[1]
 
     let ligneToModify = document.getElementById("tr-" + idUtilisateurToModify);
-
-    //ligneToModify.innerHTML = "";
-    //ligneToModify.textContent = "";
-    //while (ligneToModify.firstChild) {
 
     for (let i = 0; i < 4; i++) {
         ligneToModify.removeChild(ligneToModify.lastChild);
