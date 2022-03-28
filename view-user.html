@@ -1,18 +1,61 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Details</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+  <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+  <title>Détail utilisateur</title>
 </head>
+
 <body>
-    <div class="card">
-        <img src="img_avatar.png" alt="Avatar" style="width:100%">
-        <div class="container">
-          <h4><b>John Doe</b></h4>
-          <p>Architect & Engineer</p>
-        </div>
+  <h3>Détail de l'utilisateur :</h3>
+  <div>
+    <form id="frmviewusers">
+      <div>
+        <label id="labnom" for="nom">Nom </label><br>
+        <input type="text" name="nom" id="nom" size="75" readonly />
       </div>
+      <br>
+      <div>
+        <label id="labprenom" for="prenom">Prénom </label><br>
+        <input type="text" name="prenom" id="prenom" size="75" readonly />
+      </div>
+      <br>
+      <div>
+        <label id="labdate_naissance" for="date_naissance">Date de naissance </label><br>
+        <input type="date" name="date_naissance" id="date_naissance" size="75" readonly />
+      </div>
+      <br>
+      <div>
+        <label id="labadresse" for="adresse">Adresse</label><br>
+        <input type="text" name="adresse" id="adresse" size="75" readonly />
+      </div>
+      <br>
+      <div>
+        <label id="labtelephone" for="telephone">Numéro de téléphone</label><br>
+        <input type="text" name="telephone" id="telephone" size="75" readonly />
+      </div>
+      <br>
+      <div>
+        <label id="labemail" for="email">E-mail </label><br>
+        <input type="text" name="email" id="email" size="75" readonly />
+      </div>
+      <br>
+      <div>
+        <label id="labnum_secu" for="num_secu">Numéro de sécurité sociale</label><br>
+        <input type="text" name="num_secu" id="num_secu" size="75" readonly />
+      </div>
+      <br>
+      <div>
+        <label id="labphoto" for="photo">Photo</label><br>
+        <input type="text" name="photo" id="photo" size="75" readonly />
+      </div>
+      <br>
+      <button type="button" id="btnretour">Retour</button><br>
+    </form>
+  </div>
+  <script src="view-user.js"></script>
 </body>
+
 </html>

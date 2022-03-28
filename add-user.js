@@ -1,53 +1,57 @@
-let utilisateurs
+frmaddusers.onsubmit = function () {
+    return valider();
+};
 
-btnvalider.onclick = valider;
-btnannuler.onclick = annuler;
+/*btnvalider.onclick = function () {
+    valider();
+};*/
 
+btnannuler.onclick = function () {
+    annuler();
+};
 
-function valider(){
-    // let nom = getElementById('nom');
-    // let prenom = getElementById('prenom');
-    // let date_naissance = getElementById('date_naissance');
-    // let adresse = getElementById('adresse');
-    // let telephone = getElementById('telephone');
-    // let email = getElementById('email');
-    // let num_secu = getElementById('num_secu');
-    // let photo = getElementById('photo');
+function valider() {
 
-    // let newUtilisateur = {
-    //     nom: nom,
-    //     prenom: prenom,
-    //     date_naissance: date_naissance,
-    //     adresse: adresse,
-    //     telephone: telephone,
-    //     email: email,
-    //     num_secu: num_secu,
-    //     photo: photo
-    // };
+    let ztNom = document.getElementById('nom').value.trim();
+    let ztPrenom = document.getElementById('prenom').value.trim();
+    let ztDateNaissance = document.getElementById('date_naissance').value.trim();
+    let ztAdresse = document.getElementById('adresse').value.trim();
+    let ztTelephone = document.getElementById('telephone').value.trim();
+    let ztEmail = document.getElementById('email').value.trim();
+    let ztNumSecu = document.getElementById('num_secu').value.trim();
+    let ztPhoto = document.getElementById('photo').value.trim();
 
-    // utilisateurs.push(newUtilisateur);
+    if (ztNom == ""
+        || ztPrenom == ""
+        || ztDateNaissance == ""
+        || ztAdresse == ""
+        || ztTelephone == ""
+        || ztEmail == ""
+        || ztNumSecu == ""
+        || ztPhoto == ""
+    ) {
+        // un(des) champ(s) vide(s)
+        alert("Attention, tous les champs sont obligatoires (espaces seulement exclu) !!!");
+        return false;
+    }
+    else {
+        let newUtilisateur =
+        {
+            "nom": ztNom,
+            "prenom": ztPrenom,
+            "date_naissance": ztDateNaissance,
+            "adresse": ztAdresse,
+            "telephone": ztTelephone,
+            "email": ztEmail,
+            "num_secu": ztNumSecu,
+            "photo": ztPhoto
+        };
 
-    api.send("todo:returnAdd", utilisateurs);
+        api.send("to:addvalider", newUtilisateur);
+        return true;
+    }
+};
 
-
-}
-
-
-
-
-function annuler(){
-    api.send("todo:returnAdd", utilisateurs);
-}
-
-
-
-var eleve = document.getElementById('eleve');
-formDate = new FormData(eleve);
-
-
-document.querySelector("form").addEventListener("submit", event => {
-    const { value } = document.querySelector("input");
-
-    //console.log(value);
-    api.send("todo:add", value);
-})
+function annuler() {
+    api.send("to:addannuler");
+};

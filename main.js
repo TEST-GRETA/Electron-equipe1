@@ -27,17 +27,21 @@ const createWindow = () => {
     })
 
     mainWindow.loadFile("index.html");
+    mainWindow.show();
     mainWindow.maximize();
 }
 
 app.whenReady().then(() => {
-    createWindow()
+    createWindow();
+    createAddWindow();
+    createModifyWindow();
+    createViewWindow();
 
     app.on("activate", () => {
         if (BrowserWindow.getAllWindows().length === 0) createWindow()
     })
 
-    //!isMac && mainWindow.on("closed", () => app.quit());
+    !isMac && mainWindow.on("closed", () => app.quit());
 
     const mainMenu = Menu.buildFromTemplate(menuTemplate);
     Menu.setApplicationMenu(mainMenu);
@@ -50,8 +54,9 @@ app.on("window-all-closed", () => {
 // ### Page Création utilisateur
 function createAddWindow() {
     addWindow = new BrowserWindow({
-        width: 800,
-        height: 600,
+        frame: false,
+        width: 600,
+        height: 675,
         title: "Création utilisateur",
         webPreferences: {
             preload: path.join(__dirname, "preload.js")
@@ -59,79 +64,94 @@ function createAddWindow() {
     })
 
     addWindow.loadURL(`file://${__dirname}/add-user.html`);
-    addWindow.maximize();
+    addWindow.setMenuBarVisibility(false);
+    addWindow.setPosition(700, 35);
+    addWindow.hide();
 }
 
 // ### Page Modification utilisateur
 function createModifyWindow() {
     modifyWindow = new BrowserWindow({
-        width: 800,
-        height: 600,
+        frame: false,
+        width: 600,
+        height: 675,
         title: "Modification utilisateur",
         webPreferences: {
             preload: path.join(__dirname, "preload.js")
         }
     })
-
     modifyWindow.loadURL(`file://${__dirname}/modify-user.html`);
-    addWindow.maximize();
+    modifyWindow.setMenuBarVisibility(false);
+    modifyWindow.setPosition(700, 35);
+    modifyWindow.hide();
 }
 
 // ### Page Detail utilisateur
 function createViewWindow() {
     viewWindow = new BrowserWindow({
-        width: 800,
-        height: 600,
+        frame: false,
+        width: 600,
+        height: 675,
         title: "Détail utilisateur",
         webPreferences: {
             preload: path.join(__dirname, "preload.js")
         }
     })
-
     viewWindow.loadURL(`file://${__dirname}/view-user.html`);
-    viewWindow.maximize();
+    viewWindow.setMenuBarVisibility(false);
+    viewWindow.setPosition(700, 35);
+    viewWindow.hide();
 }
 
-ipcMain.on("todo:add", (event, collectionUtilisateurs) => {
-    createAddWindow();
-    addWindow.webContents.send("todo:add", collectionUtilisateurs);
-    mainWindow.close();
+ipcMain.on("to:add", (event) => {
+    console.log("-> want to add");
+    //createAddWindow();
+    addWindow.show();
+});
+ipcMain.on("to:addannuler", (event) => {
+    console.log("<- cancel add");
+    addWindow.reload();
+    addWindow.hide();
+    //addWindow.close();
+});
+ipcMain.on("to:addvalider", (event, newUtilisateur) => {
+    console.log("-> add : " + newUtilisateur.nom);
+    mainWindow.webContents.send("to:addvalider", newUtilisateur);
+    addWindow.hide();
+    //addWindow.close();
 });
 
-ipcMain.on("todo:modify", (event, info) => {
-    createModifyWindow();
-    modifyWindow.webContents.send("todo:modify", info);
-    mainWindow.close();
+ipcMain.on("to:modify", (event, infos) => {
+    console.log("-> want to modify : " + infos[0].nom + "-" + infos[1]);
+    //createModifyWindow();
+    modifyWindow.webContents.send("to:modify", infos);
+    modifyWindow.show();
+});
+ipcMain.on("to:modifyannuler", (event) => {
+    console.log("<- cancel modify");
+    modifyWindow.reload();
+    modifyWindow.hide();
+    //modifyWindow.close();
+});
+ipcMain.on("to:modifyvalider", (event, infos) => {
+    console.log("-> modify : " + infos[0].nom + "-" + infos[1]);
+    console.log(infos[0]);
+    mainWindow.webContents.send("to:modifyvalider", infos);
+    modifyWindow.hide();
+    //modifyWindow.close();
 });
 
-ipcMain.on("todo:delete", (event, collectionUtilisateurs) => {
-    mainWindow.close();
-    createWindow();
-    mainWindow.webContents.send("todo:delete", collectionUtilisateurs);
+ipcMain.on("to:view", (event, viewUtilisateur) => {
+    console.log("-> view : " + viewUtilisateur.nom);
+    //createViewWindow();
+    viewWindow.webContents.send("to:view", viewUtilisateur);
+    viewWindow.show();
 });
-
-ipcMain.on("todo:view", (event, info) => {
-    createViewWindow();
-    viewWindow.webContents.send("todo:view", info);
-    mainWindow.close();
-});
-
-ipcMain.on("todo:returnAdd", (event, collectionUtilisateurs) => {
-    createWindow();
-    mainWindow.webContents.send("todo:returnAdd", collectionUtilisateurs);
-    addWindow.close();
-});
-
-ipcMain.on("todo:returnModify", (event, collectionUtilisateurs) => {
-    createWindow();
-    mainWindow.webContents.send("todo:returnModify", collectionUtilisateurs);
-    modifyWindow.close();
-});
-
-ipcMain.on("todo:returnView", (event, collectionUtilisateurs) => {
-    createWindow();
-    mainWindow.webContents.send("todo:returnView", collectionUtilisateurs);
-    viewWindow.close();
+ipcMain.on("to:viewretour", (event) => {
+    console.log("<- return of view");
+    viewWindow.reload();
+    viewWindow.hide();
+    //viewWindow.close();
 });
 
 // Config MENU

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <title>Modification utilisateur</title>
+</head>
+
+<body>
+    <h3>Modification de l'utilisateur</h3>
+    <div>
+        <form id="frmmodifyusers">
+            <div>
+                <label id="labnom" for="nom">Nom </label><br>
+                <input type="text" name="nom" id="nom" size="75" required autofocus />
+            </div>
+            <br>
+            <div>
+                <label id="labprenom" for="prenom">Prénom </label><br>
+                <input type="text" name="prenom" id="prenom" size="75" required />
+            </div>
+            <br>
+            <div>
+                <label id="labdate_naissance" for="date_naissance">Date de naissance </label><br>
+                <input type="date" name="date_naissance" id="date_naissance" size="75" required />
+            </div>
+            <br>
+            <div>
+                <label id="labadresse" for="adresse">Adresse</label><br>
+                <input type="text" name="adresse" id="adresse" size="75" required />
+            </div>
+            <br>
+            <div>
+                <label id="labtelephone" for="telephone">Numéro de téléphone</label><br>
+                <input type="tel" name="telephone" id="telephone" pattern="[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2}"
+                    size="75" required />
+            </div>
+            <br>
+            <div>
+                <label id="labemail" for="email">E-mail </label><br>
+                <input type="email" name="email" id="email" size="75" required />
+            </div>
+            <br>
+            <div>
+                <label id="labnum_secu" for="num_secu">Numéro de sécurité sociale</label><br>
+                <input type="number" name="num_secu" id="num_secu" pattern="[0-9]{13}" size="75" required />
+            </div>
+            <br>
+            <div>
+                <label id="labphoto" for="photo">Photo</label><br>
+                <input type="text" name="photo" id="photo" size="75" required />
+            </div>
+            <br>
+            <button type="button" id="btnannuler">Annuler</button>
+            <button type="submit" id="btnvalider">Valider</button>
+        </form>
+    </div>
+    <script src="modify-user.js"></script>
+</body>
+
+</html>

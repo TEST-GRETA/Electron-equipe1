@@ -1,79 +1,62 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
     <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
-    <style>
-        label
-        {
-            display: block;
-            width: 150px;
-            float: left;
-        }
-
-        input
-        {
-            display: block;
-            float: right;
-        }
-
-    </style>
     <title>Création utilisateur</title>
 </head>
 
 <body>
-    <h1>Création d'un nouvel utilisateur</h1>
-    <div class="all">
-    <form method="get" action="add-user.js" id="utilisateur" name="utilisateur">
-        <div>
-            <label>Nom </label>
-            <input id="nom" required autofocus />
-        </div>
-        <br>
-        <div>
-            <label>Prénom </label>
-            <input id="prenom" required autofocus />
-        </div>
-        <br>
-        <div>
-            <label>Date de naissance </label>
-            <input type="date" name="date_naissance" id="date_naissance" required autofocus>
-            <!-- <input id="date_naissance" required autofocus /> -->
-        </div>
-        <br>
-        <div>
-            <label>Adresse</label>
-            <input type="text" name="adresse" id="adresse">
-            <!-- <input id="telephone" required autofocus /> -->
-        </div>
-        <br>
-        <div>
-            <label>Numéro de éléphone</label>
-            <input type="tel" name="telephone" id="telephone">
-            <!-- <input id="telephone" required autofocus /> -->
-        </div>
-        <br>
-        <div>
-            <label>E-mail </label>
-            <input type="email" name="email" id="email" required autofocus>
-        </div>
-        <br>
-        <div>
-            <label>Numéro de sécurité sociale</label>
-            <input id="num_secu" required autofocus />
-        </div>
-        <br>
-        <div>
-            <label>Photo</label>
-            <input type="file" name="photo" id="photo">
-        </div>
-        <br>
-        <button type="button" style="margin: 10rem;" id="btnvalider">Valider</button>
-        <button type="button" id="btnannuler">Annuler</button>
-    </form>
-</div>
+    <h3>Création d'un nouvel utilisateur</h3>
+    <div>
+        <form id="frmaddusers">
+            <div>
+                <label id="labnom" for="nom">Nom </label><br>
+                <input type="text" name="nom" id="nom" size="75" required autofocus />
+            </div>
+            <br>
+            <div>
+                <label id="labprenom" for="prenom">Prénom </label><br>
+                <input type="text" name="prenom" id="prenom" size="75" required />
+            </div>
+            <br>
+            <div>
+                <label id="labdate_naissance" for="date_naissance">Date de naissance </label><br>
+                <input type="date" name="date_naissance" id="date_naissance" size="75" required />
+            </div>
+            <br>
+            <div>
+                <label id="labadresse" for="adresse">Adresse</label><br>
+                <input type="text" name="adresse" id="adresse" size="75" required />
+            </div>
+            <br>
+            <div>
+                <label id="labtelephone" for="telephone">Numéro de téléphone</label><br>
+                <input type="tel" name="telephone" id="telephone" pattern="[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2}"
+                    size="75" required />
+            </div>
+            <br>
+            <div>
+                <label id="labemail" for="email">E-mail </label><br>
+                <input type="email" name="email" id="email" size="75" required />
+            </div>
+            <br>
+            <div>
+                <label id="labnum_secu" for="num_secu">Numéro de sécurité sociale</label><br>
+                <input type="number" name="num_secu" id="num_secu" pattern="[0-9]{13}" size="75" required />
+            </div>
+            <br>
+            <div>
+                <label id="labphoto" for="photo">Photo</label><br>
+                <input type="text" name="photo" id="photo" size="75" required />
+            </div>
+            <br>
+            <button type="button" id="btnannuler">Annuler</button>
+            <button type="submit" id="btnvalider">Valider</button>
+        </form>
+    </div>
     <script src="add-user.js"></script>
 </body>
 
