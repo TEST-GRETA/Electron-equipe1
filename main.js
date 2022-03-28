@@ -27,7 +27,6 @@ const createWindow = () => {
     })
 
     mainWindow.loadFile("index.html");
-    mainWindow.show();
     mainWindow.maximize();
 }
 
@@ -36,6 +35,8 @@ app.whenReady().then(() => {
     createAddWindow();
     createModifyWindow();
     createViewWindow();
+
+    mainWindow.show();
 
     app.on("activate", () => {
         if (BrowserWindow.getAllWindows().length === 0) createWindow()
@@ -112,12 +113,14 @@ ipcMain.on("to:addannuler", (event) => {
     console.log("<- cancel add");
     addWindow.reload();
     addWindow.hide();
+    mainWindow.show();
     //addWindow.close();
 });
 ipcMain.on("to:addvalider", (event, newUtilisateur) => {
     console.log("-> add : " + newUtilisateur.nom);
     mainWindow.webContents.send("to:addvalider", newUtilisateur);
     addWindow.hide();
+    mainWindow.show();
     //addWindow.close();
 });
 
@@ -131,6 +134,7 @@ ipcMain.on("to:modifyannuler", (event) => {
     console.log("<- cancel modify");
     modifyWindow.reload();
     modifyWindow.hide();
+    mainWindow.show();
     //modifyWindow.close();
 });
 ipcMain.on("to:modifyvalider", (event, infos) => {
@@ -138,6 +142,7 @@ ipcMain.on("to:modifyvalider", (event, infos) => {
     console.log(infos[0]);
     mainWindow.webContents.send("to:modifyvalider", infos);
     modifyWindow.hide();
+    mainWindow.show();
     //modifyWindow.close();
 });
 
@@ -151,6 +156,7 @@ ipcMain.on("to:viewretour", (event) => {
     console.log("<- return of view");
     viewWindow.reload();
     viewWindow.hide();
+    mainWindow.show();
     //viewWindow.close();
 });
 
@@ -178,7 +184,7 @@ const menuTemplate = [
             isMac ? { role: "close", accelerator: "Command+Q" } :
                 {
                     label: "Créer utilisateur", accelerator: "Ctrl+U",
-                    click() { createAddWindow(); }
+                    click() { addWindow.show(); }
                 },
             { role: "quit", label: "Quitter", accelerator: "Ctrl+Q" }
         ]
