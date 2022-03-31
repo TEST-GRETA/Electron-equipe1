@@ -2,10 +2,6 @@ frmaddusers.onsubmit = function () {
     return valider();
 };
 
-/*btnvalider.onclick = function () {
-    valider();
-};*/
-
 btnannuler.onclick = function () {
     annuler();
 };

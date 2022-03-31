@@ -67,8 +67,10 @@ function createElementsForUtilisateur(maLigne, objetUtilisateur, theId, isCreati
     btnSupprimer.addEventListener("click", function () {
         //alert("Supprimer Utilisateur !!! : " + theId);
         // suppression ligne utilisateur
-        let ligneToDelete = btnSupprimer.parentNode.parentNode;
-        ligneToDelete.parentNode.removeChild(ligneToDelete);
+        if (confirm("Veuillez confirmer la suppression de cet utilisateur SVP ! Merci")) {
+            let ligneToDelete = btnSupprimer.parentNode.parentNode;
+            ligneToDelete.parentNode.removeChild(ligneToDelete);
+        }
     });
 
     tdNom.appendChild(textNom);
